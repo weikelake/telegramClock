@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+
 	dp := dispatcher.MakeDispatcher()
 	gotgproto.StartClient(gotgproto.ClientHelper{
 		AppID:      settings.GetUserData().AppId,
@@ -27,25 +28,38 @@ func main() {
 				for {
 					if gotgproto.Sender != nil {
 						fmt.Println("client has been started")
-						for {
-							clock.GenerateClockPicture()
-							profilePhoto, err := uploadProfilePhoto(ctx, client, "clock/out.png")
-							if err != nil {
-								fmt.Println(err)
-								break
-							}
-							time.Sleep(60 * time.Second)
-							err = deleteProfilePhoto(ctx, client, profilePhoto)
-							if err != nil {
-								fmt.Println(err)
-								break
-							}
-							time.Sleep(10 * time.Millisecond)
+						clock.GenerateClockPicture()
+						profilePhoto, err := uploadProfilePhoto(ctx, client, "clock/out.png")
+						if err != nil {
+							fmt.Println(err)
+							break
 						}
 
+						for {
+							time.Sleep(60 * time.Second)
+							clock.GenerateClockPicture()
+							var profilePhotoForDelete tg.PhotosPhoto
+							profilePhotoForDelete = profilePhoto
+
+							profilePhoto, err = uploadProfilePhoto(ctx, client, "clock/out.png")
+							if err != nil {
+								fmt.Println(err)
+								break
+							}
+
+							time.Sleep(10 * time.Millisecond)
+
+							err = deleteProfilePhoto(ctx, client, profilePhotoForDelete)
+							if err != nil {
+								fmt.Println(err)
+								break
+							}
+
+						}
 						break
 					}
 				}
+
 			}()
 			return nil
 		},
@@ -90,5 +104,4 @@ func uploadProfilePhoto(ctx context.Context, client *telegram.Client, filename s
 	}
 
 	return *profilePhoto, nil
-
 }
