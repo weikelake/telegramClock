@@ -28,17 +28,19 @@ func main() {
 				for {
 					if gotgproto.Sender != nil {
 						fmt.Println("client has been started")
-						clock.GenerateClockPicture()
-						profilePhoto, err := uploadProfilePhoto(ctx, client, "clock/out.png")
-						if err != nil {
-							fmt.Println(err)
-							break
-						}
+
+						var profilePhoto tg.PhotosPhoto
 
 						for {
-							time.Sleep(60 * time.Second)
+							if !isRoundedTime() {
+								time.Sleep(1 * time.Second)
+								continue
+							}
 							clock.GenerateClockPicture()
-							var profilePhotoForDelete tg.PhotosPhoto
+							var (
+								profilePhotoForDelete tg.PhotosPhoto
+								err                   error
+							)
 							profilePhotoForDelete = profilePhoto
 
 							profilePhoto, err = uploadProfilePhoto(ctx, client, "clock/out.png")
@@ -47,8 +49,11 @@ func main() {
 								break
 							}
 
-							time.Sleep(10 * time.Millisecond)
+							time.Sleep(30 * time.Second)
 
+							if profilePhotoForDelete.Photo == nil {
+								continue
+							}
 							err = deleteProfilePhoto(ctx, client, profilePhotoForDelete)
 							if err != nil {
 								fmt.Println(err)
@@ -64,6 +69,14 @@ func main() {
 			return nil
 		},
 	})
+}
+
+func isRoundedTime() bool {
+	if time.Now().Second() == 0 {
+		fmt.Println("rounded")
+		return true
+	}
+	return false
 }
 
 func deleteProfilePhoto(ctx context.Context, client *telegram.Client, profilePhoto tg.PhotosPhoto) error {
