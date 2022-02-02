@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func GenerateClockPicture() {
+func GenerateClockPicture(offsetMinute int) {
 	var (
 		width  = 1000
 		height = 1000
@@ -16,9 +16,16 @@ func GenerateClockPicture() {
 	dc.DrawRectangle(0, 0, 1000, 1000)
 	dc.Fill()
 	dc.SetRGB(0, 100, 0)
-	dc.LoadFontFace("./clock/digital-7.ttf", 380)
+	err := dc.LoadFontFace("./clock/digital-7.ttf", 380)
+	if err != nil {
+		fmt.Println(err)
+	}
 	h := time.Now()
+	h = h.Add(time.Duration(offsetMinute) * time.Minute)
 	dc.DrawStringAnchored(fmt.Sprintf("%02d:%02d", h.Hour(), h.Minute()), float64(width/2), float64(height/2), 0.5, 0.5)
 
-	dc.SavePNG("clock/out.png")
+	err = dc.SavePNG("clock/currentTime.png")
+	if err != nil {
+		fmt.Println(err)
+	}
 }

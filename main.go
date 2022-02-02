@@ -28,22 +28,21 @@ func main() {
 				for {
 					if gotgproto.Sender != nil {
 						fmt.Println("client has been started")
-
+						clock.GenerateClockPicture(1)
 						var profilePhoto tg.PhotosPhoto
-
 						for {
 							if !isRoundedTime() {
 								time.Sleep(1 * time.Second)
 								continue
 							}
-							clock.GenerateClockPicture()
+
 							var (
 								profilePhotoForDelete tg.PhotosPhoto
 								err                   error
 							)
 							profilePhotoForDelete = profilePhoto
 
-							profilePhoto, err = uploadProfilePhoto(ctx, client, "clock/out.png")
+							profilePhoto, err = uploadProfilePhoto(ctx, client, "clock/currentTime.png")
 							if err != nil {
 								fmt.Println(err)
 								break
@@ -51,10 +50,13 @@ func main() {
 
 							time.Sleep(30 * time.Second)
 
+							go clock.GenerateClockPicture(1)
+
 							if profilePhotoForDelete.Photo == nil {
 								continue
 							}
 							err = deleteProfilePhoto(ctx, client, profilePhotoForDelete)
+
 							if err != nil {
 								fmt.Println(err)
 								break
