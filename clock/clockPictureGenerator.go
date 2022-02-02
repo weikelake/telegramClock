@@ -3,6 +3,7 @@ package clock
 import (
 	"fmt"
 	"github.com/fogleman/gg"
+	"telegramClock/settings"
 	"time"
 )
 
@@ -24,7 +25,7 @@ func GenerateClockPicture(offsetMinute int) {
 	h = h.Add(time.Duration(offsetMinute) * time.Minute)
 	dc.DrawStringAnchored(fmt.Sprintf("%02d:%02d", h.Hour(), h.Minute()), float64(width/2), float64(height/2), 0.5, 0.5)
 
-	err = dc.SavePNG("clock/currentTime.png")
+	err = dc.SavePNG(settings.GetPicturePath())
 	if err != nil {
 		fmt.Println(err)
 	}

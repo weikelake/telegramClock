@@ -42,7 +42,7 @@ func main() {
 							)
 							profilePhotoForDelete = profilePhoto
 
-							profilePhoto, err = uploadProfilePhoto(ctx, client, "clock/currentTime.png")
+							profilePhoto, err = uploadProfilePhoto(ctx, client, settings.GetPicturePath())
 							if err != nil {
 								fmt.Println(err)
 								break
