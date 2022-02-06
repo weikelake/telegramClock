@@ -15,7 +15,6 @@ import (
 )
 
 func main() {
-
 	dp := dispatcher.MakeDispatcher()
 	gotgproto.StartClient(gotgproto.ClientHelper{
 		AppID:      settings.GetUserData().AppId,
