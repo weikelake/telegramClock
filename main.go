@@ -9,6 +9,7 @@ import (
 	"github.com/gotd/td/telegram"
 	"github.com/gotd/td/telegram/uploader"
 	"github.com/gotd/td/tg"
+	"log"
 	"telegramClock/clock"
 	"telegramClock/settings"
 	"time"
@@ -27,7 +28,7 @@ func main() {
 				for {
 					if gotgproto.Sender != nil {
 						fmt.Println("client has been started")
-						clock.GenerateClockPicture(1)
+						clock.GenerateClockPicture()
 						var profilePhoto tg.PhotosPhoto
 						for {
 							if !isRoundedTime() {
@@ -44,12 +45,13 @@ func main() {
 							profilePhoto, err = uploadProfilePhoto(ctx, client, settings.GetPicturePath())
 							if err != nil {
 								fmt.Println(err)
+								log.Fatalln(err)
 								break
 							}
 
 							time.Sleep(30 * time.Second)
 
-							go clock.GenerateClockPicture(1)
+							go clock.GenerateClockPicture()
 
 							if profilePhotoForDelete.Photo == nil {
 								continue
@@ -58,6 +60,7 @@ func main() {
 
 							if err != nil {
 								fmt.Println(err)
+								log.Fatalln(err)
 								break
 							}
 

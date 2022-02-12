@@ -1,5 +1,8 @@
 *.session
 *.png
+*.exe
+apiKeys.json
 
-settings
 .idea
+bin
+vendor

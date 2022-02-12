@@ -3,16 +3,19 @@ module telegramClock
 go 1.17
 
 require (
-	github.com/anonyindian/gotgproto v1.0.0-beta04 // indirect
+	github.com/anonyindian/gotgproto v1.0.0-beta04
+	github.com/fogleman/gg v1.3.0
+	github.com/gotd/td v0.55.1
+)
+
+require (
 	github.com/cenkalti/backoff/v4 v4.1.2 // indirect
-	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/go-faster/errors v0.5.0 // indirect
 	github.com/go-faster/jx v0.31.0 // indirect
 	github.com/go-faster/xor v0.3.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/gotd/ige v0.2.2 // indirect
 	github.com/gotd/neo v0.1.5 // indirect
-	github.com/gotd/td v0.55.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.3 // indirect
 	github.com/klauspost/compress v1.14.1 // indirect
